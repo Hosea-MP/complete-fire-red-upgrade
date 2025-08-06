@@ -1,10 +1,12 @@
 import struct
+import sys
 
 def read_ptr(data, addr):
-    return struct.unpack('<I', data[addr - 0x08000000:addr - 0x08000000 + 4])[0]
+    off = addr - 0x08000000
+    return struct.unpack('<I', data[off:off + 4])[0]
 
-def main():
-    with open('rr.gba', 'rb') as f:
+def scan(path):
+    with open(path, 'rb') as f:
         data = f.read()
     addresses = {
         'species_names': 0x8000144,
@@ -14,8 +16,11 @@ def main():
     }
     for name, addr in addresses.items():
         ptr = read_ptr(data, addr)
-        offset = ptr - 0x08000000
-        print(name, hex(ptr), hex(offset))
+        if 0x08000000 <= ptr < 0x08000000 + len(data):
+            offset = ptr - 0x08000000
+            print(name, hex(ptr), hex(offset))
+        else:
+            print(name, 'invalid')
 
 if __name__ == '__main__':
-    main()
+    scan(sys.argv[1] if len(sys.argv) > 1 else 'rr.gba')
