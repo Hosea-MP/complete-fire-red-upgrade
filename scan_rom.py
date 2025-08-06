@@ -18,7 +18,7 @@ def scan(path):
         ptr = read_ptr(data, addr)
         if 0x08000000 <= ptr < 0x08000000 + len(data):
             offset = ptr - 0x08000000
-            print(name, hex(ptr), hex(offset))
+            print(name, f'{ptr:#010x}', f'{offset:#010x}')
         else:
             print(name, 'invalid')
 
