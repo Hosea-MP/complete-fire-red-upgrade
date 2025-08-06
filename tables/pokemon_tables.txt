@@ -1,0 +1,2 @@
+species_names 0x094042cc 0x014042cc
+base_stats 0x097b98ec 0x017b98ec
